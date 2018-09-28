@@ -80,6 +80,6 @@ RUN mkdir /root/.jupyter/
 RUN echo "c.NotebookApp.password = u'sha1:3213407783ae:f89f25e19b0377ce58de6f7eb9e7d8ce912f9140'" > /root/.jupyter/jupyter_notebook_config.py
 RUN echo "c.NotebookApp.ip = '172.17.0.2'" >> /root/.jupyter/jupyter_notebook_config.py
 RUN echo "c.NotebookApp.port = 8888" >> /root/.jupyter/jupyter_notebook_config.py
-RUN echo "c.NotebookApp.base_url = '/'" >> /root/.jupyter/jupyter_notebook_config.py
+RUN echo "c.NotebookApp.notebook_dir = u'/'" >> /root/.jupyter/jupyter_notebook_config.py
 
 ENV JULIABIN="/root/julia/bin/julia"
