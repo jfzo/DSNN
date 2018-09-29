@@ -10,10 +10,10 @@ function generate_partitions(Nnodes::Int64, N::Int64)
     return P
 end
 
-include("/workspace/distributed_clustering/julia/src/dsnn_Worker.jl")
-include("/workspace/distributed_clustering/julia/src/dsnn_SNN.jl")
-include("/workspace/distributed_clustering/julia/src/dsnn_KNN.jl")
-include("/workspace/distributed_clustering/julia/src/dsnn_IO.jl")
+include("dsnn_Worker.jl")
+include("dsnn_SNN.jl")
+include("dsnn_KNN.jl")
+include("dsnn_IO.jl")
 
 using LightGraphs
 using Graphs
