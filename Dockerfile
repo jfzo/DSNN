@@ -72,6 +72,7 @@ RUN apt install libltdl-dev -y
 RUN ~/julia/bin/julia -e 'Pkg.add("IJulia")'
 RUN ~/julia/bin/julia -e 'Pkg.add("Graphs")'
 RUN ~/julia/bin/julia -e 'Pkg.add("LightGraphs")'
+RUN ~/julia/bin/julia -e 'Pkg.add("Stats")'
 
 RUN echo "termcapinfo xterm* ti@:te@" > /root/.screenrc
 RUN pip install jupyter
