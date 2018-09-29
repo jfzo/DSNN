@@ -174,7 +174,7 @@ function start(results::Dict{String, Any},
         
     end
     
-    
+    # until now it never uses the corepoitns found by the centralized snn!
     corepoint_labels = labels_found[find(x->x in overall_sample_corepoints, sampled_data)]; 
 
     #assert(length(corepoint_labels) == length(overall_sample_corepoints))
