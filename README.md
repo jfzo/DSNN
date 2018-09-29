@@ -1,5 +1,13 @@
 # DSNN
 
+# Before
+
+```
+export DOCKERBIN="/usr/bin/docker"
+
+export CID=$(docker run --cpus 1 -tid -p 9999:8888 -v /var/run/docker.sock:/var/run/docker.sock -v $DOCKERBIN:/usr/bin/docker -v /tmp/results:/DistributedMachineLearningThesis/src/results dmlt) && docker exec -ti $CID /bin/bash
+```
+
 # Instructions
 
 The command to execute a single run with the parameters contained in the file _experiments\_config.csv_ is
