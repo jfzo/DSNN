@@ -65,8 +65,8 @@ RUN ~/julia/bin/julia -e 'Pkg.pin("Distributions", v"0.15.0")'
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/root/julia/bin/"
 
 # Adjustments! (jz)
-RUN git clone https://github.com/jfzo/DSNN.git
-RUN unzip /DSNN/l2knng.zip -d /DSNN/
+#RUN git clone https://github.com/jfzo/DSNN.git
+#RUN unzip /DSNN/l2knng.zip -d /DSNN/
 RUN apt install libltdl-dev -y
 
 RUN ~/julia/bin/julia -e 'Pkg.add("IJulia")'
