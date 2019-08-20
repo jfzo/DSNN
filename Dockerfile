@@ -21,7 +21,9 @@ RUN apt-key fingerprint 0EBFCD88
 RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 RUN apt update
 RUN apt-get install -y docker-ce
-RUN apt-get install -y python-numpy
+RUN apt-get install -y python-numpy python-sklearn
+RUN pip install tabulate
+
 
 # sshd 
  RUN apt-get install -y openssh-server
