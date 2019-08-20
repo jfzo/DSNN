@@ -1,0 +1,25 @@
+logging.path:str=tuning_progress_ds3-04.log
+l2knng.path:str=/workspace/l2knng/build/knng
+benchmark:str=/workspace/DS3/ds3.dat.clustering.6
+master.inputpath:str=/workspace/DS3/ds3.dat
+master.dbscan.eps:float=0.5
+master.dbscan.minpts:int=3
+master.nodelist:str_list=158.251.93.8:3301,158.251.93.8:3302,158.251.93.8:3303,158.251.93.8:3304
+master.snn.eps:int=3
+master.snn.minpts:int=8
+master.stage2clustering:str=snn
+master.stage2knn:int=50
+master.stage2snnsim_threshold:float=1.0e-6
+master.use_snngraph:bool=false
+worker.knn:int=20
+worker.sample_pct:float=0.150000
+worker.snn_eps:int=15
+worker.snn_minpts:int=17
+# build SNN net and use it as adjacency matrix (connected iff both are k-neighbors of each other).
+worker.use_snngraph:bool=true
+worker.use_snnclustering:bool=true
+# if worker.use_snnclustering is false, then the parameters below are used.
+worker.coredetection_eps:float=3
+worker.coredetection_minpts:int=170
+seed:int=209299111099644345
+

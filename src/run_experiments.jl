@@ -25,20 +25,23 @@ if length(workers()) > 1
 end
 
 
-include("/workspace/distributed_clustering/julia/src/dsnn_IO.jl")
-include("/workspace/distributed_clustering/julia/src/dsnn_SNN.jl")
-include("/workspace/distributed_clustering/julia/src/dsnn_Experiment.jl")
+include("/workspace/DSNN/src/dsnn_IO.jl")
+include("/workspace/DSNN/src/dsnn_SNN.jl")
+include("/workspace/DSNN/src/dsnn_Experiment.jl")
+
 
 config = DSNN_IO.read_configuration(CONFIG_FILE);
+
+println("Node list: ", config["master.nodelist"]);
 addprocs(config["master.nodelist"]);
 
 output = open(config["logging.path"], "w");
 println("Logging file: ", config["logging.path"]);
 
-@everywhere include("/workspace/distributed_clustering/julia/src/dsnn_IO.jl")
-@everywhere include("/workspace/distributed_clustering/julia/src/dsnn_KNN.jl")
-@everywhere include("/workspace/distributed_clustering/julia/src/dsnn_SNN.jl")
-@everywhere include("/workspace/distributed_clustering/julia/src/dsnn_Master.jl")
+@everywhere include("/workspace/DSNN/src/dsnn_IO.jl")
+@everywhere include("/workspace/DSNN/src/dsnn_KNN.jl")
+@everywhere include("/workspace/DSNN/src/dsnn_SNN.jl")
+@everywhere include("/workspace/DSNN/src/dsnn_Master.jl")
 
 using Graphs
 using CSV

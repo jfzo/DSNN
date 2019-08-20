@@ -50,6 +50,8 @@ function stage1_start(
         #cl_results = DSNN_SNN.snn_clustering(snn_eps, snn_minpts, snn_graph);
         cl_results = DSNN_SNN.snn_clustering(snn_eps, snn_minpts, adj_mat);
 
+	println("***********************+++++++")
+	println(typeof(cl_results))
         cl_labels = cl_results["labels"];# Matrix containing length(assigned_instances) x num_clusters_found
         cl_clusters = cl_results["clusters"];# Array with the label of each column of the matrix above
         cl_corepoints = cl_results["corepoints"];# Array with data point indexes
@@ -58,7 +60,7 @@ function stage1_start(
             println("[W] Warning! No corepoints were found. Aborting execution in this worker.");
             error(@sprintf("No corepoints were found by this worker (%d)", myid()) )
         else
-            println(@sprintf("[W] Nr. corepoints found by this worker (%d):%d", myid(),length()cl_results["corepoints"]) )
+            println(@sprintf("[W] Nr. corepoints found by this worker (%d):%d", myid(),length(cl_results["corepoints"])) )
             
         end
 

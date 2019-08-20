@@ -262,10 +262,9 @@ function snn_clustering(Eps::Int64, MinPts::Int64, Snn::SparseMatrixCSC{Float64,
     #println("clusters:", clusters)
     cm = countmap(clusters);
     println("Proportions:",cm, "(",sum(values(cm)),")")
-    return clustering
+    #return clustering
 
     #####
-    """
     I = Int64[];
     J = Int64[];
     V = Int64[];
@@ -274,9 +273,9 @@ function snn_clustering(Eps::Int64, MinPts::Int64, Snn::SparseMatrixCSC{Float64,
     cl_label_to_col = Dict{Int64, Int64}();
     nxt_col_val = 0;
 
-    for i=collect(1:num_points)
+    for i=collect(1:N)
         #cluster_assignment[i] = d_point_cluster_id[i]
-        curr_label = d_point_cluster_id[i];
+        curr_label = clustering[i];
         if !haskey(cl_label_to_col, curr_label)
             nxt_col_val += 1;
             push!(clusters, curr_label);
@@ -287,12 +286,13 @@ function snn_clustering(Eps::Int64, MinPts::Int64, Snn::SparseMatrixCSC{Float64,
         push!(V, 1);
     end 
 
-    membership = sparse(I,J,V, num_points, nxt_col_val);
+    membership = sparse(I,J,V, N, nxt_col_val);
 
     ######
 
     return Dict{String, Any}("labels" => membership, "corepoints" => corepoints, "clusters" => clusters)
-    """
+
+
 end
 
 end
