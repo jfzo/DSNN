@@ -15,7 +15,15 @@ RUN apt-get install -y hdf5-tools
 
 # Docker
 RUN apt update
-RUN apt-get install -y docker.io
+RUN apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+RUN apt-key fingerprint 0EBFCD88
+RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+RUN apt update
+RUN apt-get install -y docker-ce
+RUN apt-get install -y python-numpy python-sklearn
+RUN pip install tabulate
+
 
 # sshd 
  RUN apt-get install -y openssh-server
@@ -51,6 +59,10 @@ RUN ~/julia/bin/julia -e 'Pkg.add("Mocha")'
 RUN ~/julia/bin/julia -e 'Pkg.add("DataFrames")'
 RUN ~/julia/bin/julia -e 'Pkg.add("Distances")'
 RUN ~/julia/bin/julia -e 'Pkg.add("Logging")'
+RUN ~/julia/bin/julia -e 'Pkg.add("ArgParse")'
+RUN ~/julia/bin/julia -e 'Pkg.add("Stats")'
+RUN ~/julia/bin/julia -e 'Pkg.add("Graphs")'
+RUN ~/julia/bin/julia -e 'Pkg.add("LightGraphs")'
 # # pinning packages
 RUN ~/julia/bin/julia -e 'Pkg.pin("CSV", v"0.2.5")'
 RUN ~/julia/bin/julia -e 'Pkg.pin("DataFrames", v"0.11.7")'
@@ -61,26 +73,4 @@ RUN ~/julia/bin/julia -e 'Pkg.pin("Debug", v"0.1.5")'
 RUN ~/julia/bin/julia -e 'Pkg.pin("Distributions", v"0.15.0")'
 #TODO Pkg.clone("https://github.com/ararslan/OperatingSystems.jl.git")
 
-
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/root/julia/bin/"
-
-# Adjustments! (jz)
-#RUN git clone https://github.com/jfzo/DSNN.git
-#RUN unzip /DSNN/l2knng.zip -d /DSNN/
-RUN apt install libltdl-dev -y
-
-RUN ~/julia/bin/julia -e 'Pkg.add("IJulia")'
-RUN ~/julia/bin/julia -e 'Pkg.add("Graphs")'
-RUN ~/julia/bin/julia -e 'Pkg.add("LightGraphs")'
-RUN ~/julia/bin/julia -e 'Pkg.add("Stats")'
-
-RUN echo "termcapinfo xterm* ti@:te@" > /root/.screenrc
-RUN pip install jupyter
-RUN mkdir /root/.jupyter/
-
-RUN echo "c.NotebookApp.password = u'sha1:3213407783ae:f89f25e19b0377ce58de6f7eb9e7d8ce912f9140'" > /root/.jupyter/jupyter_notebook_config.py
-RUN echo "c.NotebookApp.ip = '172.17.0.2'" >> /root/.jupyter/jupyter_notebook_config.py
-RUN echo "c.NotebookApp.port = 8888" >> /root/.jupyter/jupyter_notebook_config.py
-RUN echo "c.NotebookApp.notebook_dir = u'/'" >> /root/.jupyter/jupyter_notebook_config.py
-
-ENV JULIABIN="/root/julia/bin/julia"
