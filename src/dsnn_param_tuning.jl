@@ -70,20 +70,21 @@ if length(workers()) > 1
 end
 
 
-include("/workspace/distributed_clustering/julia/src/dsnn_IO.jl")
-#@everywhere include("/workspace/distributed_clustering/julia/src/dsnn_KNN.jl")
-#@everywhere include("/workspace/distributed_clustering/julia/src/dsnn_SNN.jl")
-#@everywhere include("/workspace/distributed_clustering/julia/src/dsnn_Master.jl")
+include("/workspace/DSNN/src/dsnn_IO.jl")
+#@everywhere include("/workspace/DSNN/src/dsnn_KNN.jl")
+#@everywhere include("/workspace/DSNN/src/dsnn_SNN.jl")
+#@everywhere include("/workspace/DSNN/src/dsnn_Master.jl")
 
 
 config = DSNN_IO.read_configuration(CONFIG_FILE);
 addprocs(config["master.nodelist"]);
 
-@everywhere include("/workspace/distributed_clustering/julia/src/dsnn_IO.jl")
-@everywhere include("/workspace/distributed_clustering/julia/src/dsnn_KNN.jl")
-@everywhere include("/workspace/distributed_clustering/julia/src/dsnn_SNN.jl")
-@everywhere include("/workspace/distributed_clustering/julia/src/dsnn_Master.jl")
-include("/workspace/distributed_clustering/julia/src/dsnn_Experiment.jl")
+@everywhere include("/workspace/DSNN/src/dsnn_IO.jl")
+@everywhere include("/workspace/DSNN/src/dsnn_KNN.jl")
+@everywhere include("/workspace/DSNN/src/dsnn_SNN.jl")
+@everywhere include("/workspace/DSNN/src/dsnn_Master.jl")
+include("/workspace/DSNN/src/dsnn_Experiment.jl")
+
 
 using Graphs
 using CSV
@@ -119,27 +120,34 @@ output = open(config["logging.path"], "w");
 
 config["master.stage2clustering"] = "snn"
 config["master.use_snngraph"] = false
+
 for master_stage2snnsim_threshold in [0.0, 1e-7, 1e-6, 1e-5]
-    for master_stage2knn in [50, 120]
-        for master_snn_minpts in [3, 5, 8, 13, 20]
+    for master_stage2knn in [50, 120, 150]
+        for master_snn_minpts in [3, 5, 13, 20, 40, 60]
             for master_snn_eps in [1e-6, 5e-6, 1e-5, 5e-5, 1e-4, 5e-4, 1e-3, 5e-3, 1e-2, 1e-1]
-                config["master.stage2snnsim_threshold"] = master_stage2snnsim_threshold;
-                config["master.stage2knn"] = master_stage2knn;
-                config["master.snn.minpts"] = master_snn_minpts;
-                config["master.snn.eps"] = master_snn_eps;
-                println();
+                for worker_snn_eps in [1e-7, 1e-6, 5e-6]
+                    for worker_snn_minpts in [3, 5, 13, 20, 40, 60]
+			config["master.stage2snnsim_threshold"] = master_stage2snnsim_threshold;
+			config["master.stage2knn"] = master_stage2knn;
+			config["master.snn.minpts"] = master_snn_minpts;
+			config["master.snn.eps"] = master_snn_eps;
+			config["worker.snn_eps"] = worker_snn_eps;
+			config["worker.snn_minpts"] = worker_snn_minpts;
+			
+			println();
 
-                println(DSNN_EXPERIMENT.config_as_str(config));
+			println(DSNN_EXPERIMENT.config_as_str(config));
 
-                try
-                    execute_run();
-                    catch y
-                    if isa(y, ErrorException)
-                        println(y)
-                        write(output, "Error occurred!");
+			try
+			    execute_run();
+			    catch y
+			    if isa(y, ErrorException)
+				println(y)
+				write(output, "Error occurred!");
+		            end
+                        end
                     end
-                end
-
+		end
             end
         end
     end

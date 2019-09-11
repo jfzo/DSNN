@@ -123,9 +123,10 @@ function stage1_start(
     end
     
     # Operation condition: no more than 30% of the total data assigned is reported
-    if length(result["corepoints"]) > (0.5*length(assigned_instances))
+    max_corepts_pct = config_params["worker.max_pct_corepoints_found"]
+    if length(result["corepoints"]) > (max_corepts_pct*length(assigned_instances))
         println("[W] Warning! Too many corepoints were found. Aborting execution in this worker.");
-        error(@sprintf("Too many corepoints %d from %d (more than 30 pct) were found by this worker (%d)", length(result["corepoints"]),length(assigned_instances),myid()) )
+        error(@sprintf("Too many corepoints %d from %d (more than %f pct) were found by this worker (%d)", length(result["corepoints"]),length(assigned_instances),max_corepts_pct*100,myid()) )
     end
 
     return result

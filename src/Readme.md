@@ -43,6 +43,7 @@ grep -B 8 -A 5 XXX tuning_progress.log
 | master.stage2knn:int | 3 | Size of the neighborhood used to build the SNN similarity matrix over the retrieved points from  all workers |
 | master.stage2snnsim_threshold:float | 0.0 |  |
 | master.use_snngraph:bool | false | Generate (at the Master) a snn graph connecting objects that are contained in eachother neighborhood or to use only the snn similarity matrix. |
+| worker.max_pct_corepoints_found:float | 0.3 | Maximum percentage of corepoints that a worker is allowed to detect. Over this pct, the method will consider a failed attempt. |
 | worker.knn:int | 120 | Employed in stage1 and stage2 at the workers for building the SNN similarity matrix |
 | worker.sample_pct:float | 0.050000 | Employed as the size of the sample that each worker generates at the end of stage1 |
 | worker.snn_eps:float | 1e-4 | Employed in stage1 and stage2 at the workers for performing the SNN clustering and for detecting noisy points in stage2 |
