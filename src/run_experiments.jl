@@ -25,9 +25,9 @@ if length(workers()) > 1
 end
 
 
-include("/workspace/DSNN/src/dsnn_IO.jl")
-include("/workspace/DSNN/src/dsnn_SNN.jl")
-include("/workspace/DSNN/src/dsnn_Experiment.jl")
+include("dsnn_IO.jl")
+include("dsnn_SNN.jl")
+include("dsnn_Experiment.jl")
 
 
 config = DSNN_IO.read_configuration(CONFIG_FILE);
@@ -38,10 +38,10 @@ addprocs(config["master.nodelist"]);
 output = open(config["logging.path"], "w");
 println("Logging file: ", config["logging.path"]);
 
-@everywhere include("/workspace/DSNN/src/dsnn_IO.jl")
-@everywhere include("/workspace/DSNN/src/dsnn_KNN.jl")
-@everywhere include("/workspace/DSNN/src/dsnn_SNN.jl")
-@everywhere include("/workspace/DSNN/src/dsnn_Master.jl")
+@everywhere include("dsnn_IO.jl")
+@everywhere include("dsnn_KNN.jl")
+@everywhere include("dsnn_SNN.jl")
+@everywhere include("dsnn_Master.jl")
 
 using Graphs
 using CSV

@@ -242,7 +242,7 @@ function dbscan_snn(e_snn::Array{Array{Int64}}, minPts::Int64, borderPoints::Boo
     return id;
 end
 
-function snn_clustering(Eps::Int64, MinPts::Int64, Snn::SparseMatrixCSC{Float64,Int64})
+function snn_clustering(Eps::Float64, MinPts::Int64, Snn::SparseMatrixCSC{Float64,Int64})
     
     println("----->   New implementation of snn_clustering!!")
     N = size(Snn, 1);
