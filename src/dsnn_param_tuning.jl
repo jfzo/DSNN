@@ -29,6 +29,11 @@ function execute_run()
                 writedlm(@sprintf("%s.dsnnfinal.labels",DATA_PATH), results["stage2_labels"], "\n");
                 write(output, "Final labels stored at ",@sprintf("%s.dsnnfinal.labels\n",DATA_PATH));
 
+				s_performance = readstring(`python evaluate_corepoint_files.py  -i $DATA_PATH -f rst`);
+                write(output, s_performance);
+                write(output, "\n");
+
+                #=
                 # Experimentation over the obtained corepoints
                 D = DSNN_IO.sparseMatFromFile(DATA_PATH, l2normalize=true);
                 real_labels = vec(readdlm(@sprintf("%s.labels",DATA_PATH), Int32));
@@ -56,6 +61,7 @@ function execute_run()
                 s_performance = readstring(`python evaluate_corepoint_files.py -e snn,dbscan,conncomps -i $DATA_PATH -b $BENCHMARK_LABELS -f rst`);
                 write(output, s_performance);
                 write(output, "\n");
+                =#
 end
 
 
@@ -79,11 +85,11 @@ include("/workspace/DSNN/src/dsnn_IO.jl")
 config = DSNN_IO.read_configuration(CONFIG_FILE);
 addprocs(config["master.nodelist"]);
 
-@everywhere include("dsnn_IO.jl")
-@everywhere include("dsnn_KNN.jl")
-@everywhere include("dsnn_SNN.jl")
-@everywhere include("dsnn_Master.jl")
-include("dsnn_Experiment.jl")
+@everywhere include("/workspace/DSNN/src/dsnn_IO.jl")
+@everywhere include("/workspace/DSNN/src/dsnn_KNN.jl")
+@everywhere include("/workspace/DSNN/src/dsnn_SNN.jl")
+@everywhere include("/workspace/DSNN/src/dsnn_Master.jl")
+include("/workspace/DSNN/src/dsnn_Experiment.jl")
 
 
 using Graphs
@@ -139,9 +145,10 @@ for master_stage2snnsim_threshold in [0.0, 1e-7, 1e-6, 1e-5]
 						println(DSNN_EXPERIMENT.config_as_str(config));
 
 						try
-						    execute_run();
+						    execute_run();						    
 						    flush(output)
-						catch y
+
+							catch y
 						    if isa(y, ErrorException)
 								println(y)
 								write(output, "Error occurred!");

@@ -31,19 +31,23 @@ def obtain_performance(real_labels, estimated_labels):
 
 parser = argparse.ArgumentParser(description='Sparse data file name.')
 parser.add_argument('-i', type=str, help='file name', required=True)
-parser.add_argument('-e', type=str, help='comma separated list of methods to evaluate', required=True)
+parser.add_argument('-e', type=str, help='comma separated list of methods to evaluate', required=False)
 parser.add_argument('-b', type=str, help='File with benchmark labels', required=False)
 parser.add_argument('-f', type=str, help='display format (plain, simple, grid, html, latex, latex_raw, latex_booktabs ...). See tabulate package.', required=True)
 args = parser.parse_args()
 
 DATA_PATH = args.i
-methods = args.e.split(",")
+
 
 print "Evaluating over corepoints generated from data file", DATA_PATH
 
 
-#cpdata = np.genfromtxt("{0}.corepoints.csv".format(DATA_PATH), delimiter=' ')
-real_lbl = np.loadtxt("{0}.corepoints.labels".format(DATA_PATH),delimiter="\n")
+methods = []
+if args.e:
+    methods = args.e.split(",")
+    #cpdata = np.genfromtxt("{0}.corepoints.csv".format(DATA_PATH), delimiter=' ')
+    real_lbl = np.loadtxt("{0}.corepoints.labels".format(DATA_PATH),delimiter="\n")
+
 allreal_lbl = np.loadtxt("{0}.labels".format(DATA_PATH),delimiter="\n")
 total_num_clusters = np.unique(allreal_lbl).shape[0]
 
@@ -54,6 +58,7 @@ headers = ["Method", "V-Score", "ARI", "AMI", "#Grps(from {0})".format(total_num
 
 labels = np.loadtxt("{0}.dsnnfinal.labels".format(DATA_PATH), delimiter="\n")
 num_clusters_found = np.unique(labels).shape[0]
+
 #print_performance(real_lbl, labels)
 values = obtain_performance(allreal_lbl, labels)
 performances.append(["D-SNN (all)",values["v-score"],values["ari"],values["ami"],num_clusters_found,values["noise"]])
